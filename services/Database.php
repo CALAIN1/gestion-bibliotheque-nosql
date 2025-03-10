@@ -1,5 +1,6 @@
 <?php
-require '../vendor/autoload.php';
+
+namespace App\Services;
 
 class Database
 {
@@ -8,7 +9,7 @@ class Database
 
     public function __construct()
     {
-        $this->client = new MongoDB\Client("mongodb+srv://admin:adminpassword@localhost:27017/");
+        $this->client = new \MongoDB\Client("mongodb://admin:adminpassword@localhost:27017/");
         $this->db = $this->client->selectDatabase("bibliotheque");
     }
 

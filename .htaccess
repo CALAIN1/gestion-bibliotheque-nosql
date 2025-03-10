@@ -1,0 +1,18 @@
+# Activer le moteur de réécriture d'URL d'Apache
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # 1. Interdire l'accès direct aux fichiers PHP (sauf index.php)
+    RewriteCond %{REQUEST_URI} !^/index\.php$ 
+    RewriteRule \.php$ - [F,L]
+
+    # 2. Servir les fichiers statiques depuis /public (si l'URL contient une extension connue)
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*\.(css|js|png|jpg|jpeg|gif|ico))$ /public/$1 [L,NC]
+
+    # 3. Rediriger toutes les autres requêtes vers index.php (routing MVC)
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ /index.php [L,QSA]
+</IfModule>
