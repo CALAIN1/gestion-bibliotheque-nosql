@@ -3,7 +3,7 @@
 use App\Core\BaseController;
 use App\Core\Route;
 
-class HomeController extends BaseController
+class ViewsController extends BaseController
 {
     #[Route("/", "GET")]
     public function index()
