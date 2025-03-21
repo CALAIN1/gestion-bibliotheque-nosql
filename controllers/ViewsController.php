@@ -10,4 +10,10 @@ class ViewsController extends BaseController
     {
         return $this->render('home');
     }
+
+    #[Route("/add_livre", "GET")]
+    public function addLivre()
+    {
+        return $this->render('add_livre');
+    }
 }

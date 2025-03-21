@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Core\BaseController;
 use App\Core\Route;
+use App\Models\Livre;
 use App\Services\Database;
 use DateTime;
 use Exception;
@@ -34,19 +35,18 @@ class LivreController extends BaseController
         }
 
         try {
-            $result = $this->db->insertOne([
-                "titre" => $data['titre'],
-                "auteur" => $data['auteur'],
-                "annee" => (int) $data['annee'],
-                "date_creation" => new DateTime()
-            ]);
+            $livre = new Livre();
+            $livre->titre = $data['titre'];
+            $livre->auteur = $data['auteur'];
+            $livre->annee = (int)$data['annee'];
+            $result = $this->db->insertOne($livre);
 
             return $this->json([
                 "message" => "Livre ajouté avec succès",
                 "livre_id" => (string) $result->getInsertedId()
             ], 201);
         } catch (\Exception $e) {
-            return $this->json(["error" => "Erreur MongoDB : " . $e->getMessage()], 500);
+            return $this->json(["message" => "Erreur MongoDB : " . $e->getMessage()], 500);
         }
     }
 }
