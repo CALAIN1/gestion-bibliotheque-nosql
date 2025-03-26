@@ -49,4 +49,11 @@ class LivreController extends BaseController
             return $this->json(["message" => "Erreur MongoDB : " . $e->getMessage()], 500);
         }
     }
+
+    #[Route("/livres", "GET")]
+    public function getAllLivres()
+    {
+        $livres = $this->db->find()->toArray(); // Récupère tous les livres
+        return $this->json($livres); // Retourne la liste en JSON
+    }
 }

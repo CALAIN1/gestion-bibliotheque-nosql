@@ -2,6 +2,8 @@
 
 use App\Core\BaseController;
 use App\Core\Route;
+use App\Services\Database;
+use DateTime;
 
 class EmpruntController extends BaseController
 {
@@ -9,17 +11,32 @@ class EmpruntController extends BaseController
 
     public function __construct()
     {
-        //$this->db = (new Database())->getCollection("emprunts");
+        $this->db = (new Database())->getCollection("emprunts");
     }
 
-    #[Route("/livre/{livre_id}/emprunt")]
-    public function getEmprunteur($livre_id)
+    #[Route("/livre/emprunter", "POST")]
+    public function emprunterLivre()
     {
-        /*$emprunt = $this->db->findOne(["livre_id" => new MongoDB\BSON\ObjectId($livre_id)]);
-        if ($emprunt) {
-            echo json_encode($emprunt);
-        } else {
-            echo json_encode(["message" => "Ce livre n'est pas emprunté."]);
-        }*/
+        $data = $this->getRequestData();
+
+        if (!isset($data['titre'], $data['auteur'], $data['emprunteur'])) {
+            return $this->json(["error" => "Champs manquants"], 400);
+        }
+
+        $this->db->insertOne([
+            "titre" => $data['titre'],
+            "auteur" => $data['auteur'],
+            "emprunteur" => $data['emprunteur'],
+            "date_emprunt" => new DateTime()
+        ]);
+
+        return $this->json(["message" => "Livre emprunté avec succès"]);
+    }
+
+    #[Route("/emprunts", "GET")]
+    public function getAll()
+    {
+        $emprunts = $this->db->find()->toArray();
+        return $this->json($emprunts);
     }
 }

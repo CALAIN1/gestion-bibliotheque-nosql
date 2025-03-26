@@ -16,4 +16,10 @@ class ViewsController extends BaseController
     {
         return $this->render('add_livre');
     }
+
+    #[Route("/emprunt", "GET")]
+    public function emprunt()
+    {
+        return $this->render('emprunt');
+    }
 }
